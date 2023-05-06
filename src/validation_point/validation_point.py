@@ -17,7 +17,8 @@ class ValidationPoint:
 
         self.db_id = None
         self.is_success = False
-        self.url_postfix = "TestSuite/{test_suite_id}/TestCase/{test_case_id}/ValidationTag/{validation_tag_id}/ValidationPoint"
+        self.url_postfix = "TestSuite/{test_suite_id}/TestCase/{test_case_id}/" \
+                           "ValidationTag/{validation_tag_id}/ValidationPoint"
 
         self.requests_handler = RequestsHandler.get_instance()
 
