@@ -21,7 +21,7 @@ class ValidationPointSampleGenerator:
                     actual=self.fake.word(),
                     expected=self.fake.word(),
                     tolerance=self.fake.word(),
-                    status=self.fake.word()
+                    status=self.fake.random_element(elements=("pass", "fail"))
                 )
             ) for _ in range(self.fake.random_int(min=1, max=5))
         ]

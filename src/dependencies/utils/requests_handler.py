@@ -28,6 +28,4 @@ class RequestsHandler:
             except KeyError:
                 return response.json()["id"]
         else:
-            print(response.status_code)
-            print(response.request.body)
             exit(1)
