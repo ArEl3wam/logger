@@ -1,32 +1,67 @@
-import src.dependencies.models.validation_point as validation_point_models
+from collections import defaultdict
+
+from src.comparator.comparator import Comparator
 from src.dependencies.utils.requests_handler import RequestsHandler
 
 
 class ValidationPoint:
     def __init__(
             self,
-            validation_point_model: validation_point_models.ValidationPointModel,
+            levels: list[dict],
+            meta_data: dict,
             test_suite_ref,
             validation_tag_ref,
             test_case_ref
     ):
-        self.meta_data = validation_point_model
+        self.levels = levels
+        self.meta_data = meta_data
+        self.results: dict[str, dict] = defaultdict(dict)
         self.parent_test_suite = test_suite_ref
         self.parent_test_case = test_case_ref
         self.parent_validation_tag = validation_tag_ref
 
         self.db_id = None
-        self.is_success = False
+        self.is_success = True
         self.url_postfix = "TestSuite/{test_suite_id}/TestCase/{test_case_id}/" \
                            "ValidationTag/{validation_tag_id}/ValidationPoint"
 
         self.requests_handler = RequestsHandler.get_instance()
 
+    def create_result(self, name, actual, expected, tolerance=0):
+        result = Comparator.compare_dict(
+            {
+                "actual": actual,
+                "expected": expected,
+                "tolerance": tolerance
+            }
+        )
+        status = result["status"]
+        self.results[f"{name}"] = {
+            "actual": actual,
+            "expected": expected,
+            "tolerance": tolerance,
+            "status": status,
+        }
+        self.update_status(status == "pass")
+
+    def update_status(self, is_success: bool):
+        if not self.is_success:
+            return
+        if self.is_success and is_success:
+            return
+        self.is_success = is_success
+        self.push()
+        url_postfix = "validationPoints/{validation_point_id}".format(validation_point_id=self.db_id)
+        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
+        self.parent_validation_tag.update_status(is_success)
+
     def json(self):
-        d = self.meta_data.dict()
-        d["results"] = {result["name"]: result["result_info"] for result in d["results"]}
-        d.update({"isSuccessful": self.is_success})
-        return d
+        return {
+            "levels": self.levels,
+            "metaData": self.meta_data,
+            "results": self.results,
+            "isSuccessful": self.is_success,
+        }
 
     def push(self):
         if not self.db_id:

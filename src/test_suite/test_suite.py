@@ -14,7 +14,7 @@ class TestSuite:
         self.validation_tags = []
 
         self.db_id = None
-        self.is_success = False
+        self.is_success = True
         self.url_postfix = "TestSuites/"
         self.requests_handler = RequestsHandler.get_instance()
 
@@ -27,6 +27,16 @@ class TestSuite:
         vt = ValidationTag(validation_tag_model, self)
         self.validation_tags.append(vt)
         return vt
+
+    def update_status(self, is_success: bool):
+        if not self.is_success:
+            return
+        if self.is_success and is_success:
+            return
+
+        self.is_success = is_success
+        url_postfix = "TestSuites/{test_suite_id}".format(test_suite_id=self.db_id)
+        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
 
     def json(self):
         return {"metaData": self.meta_data.dict(), "isSuccessful": self.is_success}

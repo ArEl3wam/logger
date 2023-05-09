@@ -29,3 +29,12 @@ class RequestsHandler:
                 return response.json()["id"]
         else:
             exit(1)
+
+    def patch(self, url_postfix: str, data: dict):
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        response = requests.patch(self.url + url_postfix, headers=headers, data=json.dumps(data))
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(response.status_code)
+            exit(1)

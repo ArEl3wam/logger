@@ -10,7 +10,7 @@ class ValidationTag:
         self.validation_points = []
 
         self.db_id = None
-        self.is_success = False
+        self.is_success = True
 
         if test_case_ref:
             self.url_postfix = "validationTags/testSuites/{test_suite_id}/testCases/{test_case_id}"
@@ -19,10 +19,21 @@ class ValidationTag:
 
         self.requests_handler = RequestsHandler.get_instance()
 
-    def create_validation_point(self, validation_point_model):
-        vp = ValidationPoint(validation_point_model, self.parent_test_suite, self, self.parent_test_case)
+    def create_validation_point(self, levels, meta_data):
+        vp = ValidationPoint(levels, meta_data, self.parent_test_suite, self, self.parent_test_case)
         self.validation_points.append(vp)
         return vp
+
+    def update_status(self, is_success: bool):
+        if not self.is_success:
+            return  # if validation tag is already failed, it cannot be successful again
+        if self.is_success and is_success:
+            return  # if validation tag is already successful, and it is successful again, do nothing
+
+        self.is_success = is_success  # if validation tag is successful, and it is failed now, update state
+        url_postfix = "validationTags/{validation_tag_id}".format(validation_tag_id=self.db_id)
+        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
+        self.parent_test_case.update_status(is_success)
 
     def json(self):
         return {"metaData": self.meta_data.dict(), "isSuccessful": self.is_success}
