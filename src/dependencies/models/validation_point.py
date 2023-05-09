@@ -11,5 +11,4 @@ class Result(BaseModel):
 
 class ValidationPointModel(BaseModel):
     levels: list[dict]
-    metaData: dict
-    results: list[dict[str, Result]]
+    meta_data: dict

@@ -18,7 +18,7 @@ for _ in range(1):
         for _ in range(1):
             vt = tc.create_validation_tag(validation_tag_sample_generator.generate())
             for _ in range(1):
-                vp = vt.create_validation_point(**validation_point_sample_generator.generate())
+                vp = vt.create_validation_point(validation_point_sample_generator.generate())
                 for _ in range(1):
                     vp.create_result(**validation_point_sample_generator.generate_result())
 

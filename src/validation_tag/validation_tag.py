@@ -1,3 +1,4 @@
+from src.dependencies.models.validation_point import ValidationPointModel
 from src.validation_point.validation_point import ValidationPoint
 from src.dependencies.utils.requests_handler import RequestsHandler
 
@@ -19,8 +20,8 @@ class ValidationTag:
 
         self.requests_handler = RequestsHandler.get_instance()
 
-    def create_validation_point(self, levels, meta_data):
-        vp = ValidationPoint(levels, meta_data, self.parent_test_suite, self, self.parent_test_case)
+    def create_validation_point(self, validation_point_model: ValidationPointModel):
+        vp = ValidationPoint(validation_point_model, self.parent_test_suite, self, self.parent_test_case)
         self.validation_points.append(vp)
         return vp
 

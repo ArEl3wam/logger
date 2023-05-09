@@ -8,7 +8,6 @@ class TestSuiteSampleGenerator:
 
     def generate(self):
         fake = self.fake
-        # generate random StandAloneAttributes objects
         sa_configuration = []
         for i in range(fake.random_int(min=1, max=5)):
             sa_configuration.append(
@@ -23,7 +22,6 @@ class TestSuiteSampleGenerator:
                 )
             )
 
-        # generate random MPGAttributes objects
         mpg_configuration = []
         for i in range(fake.random_int(min=1, max=5)):
             mpg_configuration.append(
@@ -42,27 +40,39 @@ class TestSuiteSampleGenerator:
             )
 
         # generate random sa_connectivity_map and mpg_connectivity_map dictionaries
-        sa_connectivity_map = {str(i + 1): str(fake.random_int(min=1, max=2)) for i in range(fake.random_int(min=1, max=6))}
-        mpg_connectivity_map = {str(i + 1): str(fake.random_int(min=1, max=2)) for i in range(fake.random_int(min=1, max=6))}
+        sa_connectivity_map = {
+            str(i + 1): str(fake.random_int(min=1, max=2))
+            for i in range(fake.random_int(min=1, max=6))
+        }
+        mpg_connectivity_map = {
+            str(i + 1): str(fake.random_int(min=1, max=2))
+            for i in range(fake.random_int(min=1, max=6))
+        }
 
         # initialize the DUTInstanceInfo, DUTConnectivityMap, and DesignInfo objects with the generated data
-        dut_instance_info = test_suite_models.DUTInstanceInfo(sa_configuration=sa_configuration,
-                                                              mpg_configuration=mpg_configuration)
-        dut_connectivity_map = test_suite_models.DUTConnectivityMap(sa_connectivity_map=sa_connectivity_map,
-                                                                    mpg_connectivity_map=mpg_connectivity_map)
-        design_info = test_suite_models.DesignInfo(dut_instance_info=dut_instance_info,
-                                                   dut_connectivity_map=dut_connectivity_map)
+        dut_instance_info = test_suite_models.DUTInstanceInfo(
+            sa_configuration=sa_configuration,
+            mpg_configuration=mpg_configuration
+        )
+        dut_connectivity_map = test_suite_models.DUTConnectivityMap(
+            sa_connectivity_map=sa_connectivity_map,
+            mpg_connectivity_map=mpg_connectivity_map
+        )
+        design_info = test_suite_models.DesignInfo(
+            dut_instance_info=dut_instance_info,
+            dut_connectivity_map=dut_connectivity_map
+        )
 
         # generate a TestSuite object with the generated data
         return test_suite_models.TestSuiteModel(
-                owner=fake.name(),
-                version=fake.random_int(),
-                machine=fake.word(),
-                running_mode=fake.word(),
-                platform=fake.word(),
-                solution=fake.word(),
-                tool_name=fake.word(),
-                metaData=fake.sentence(),
-                date=str(fake.date_time()),
-                design_info=design_info,
+            owner=fake.name(),
+            version=fake.random_int(),
+            machine=fake.word(),
+            running_mode=fake.word(),
+            platform=fake.word(),
+            solution=fake.word(),
+            tool_name=fake.word(),
+            metaData=fake.sentence(),
+            date=str(fake.date_time()),
+            design_info=design_info,
         )

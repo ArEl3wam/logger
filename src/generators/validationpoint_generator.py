@@ -1,4 +1,5 @@
 from faker import Faker
+from src.dependencies.models.validation_point import ValidationPointModel
 
 
 class ValidationPointSampleGenerator:
@@ -7,20 +8,23 @@ class ValidationPointSampleGenerator:
 
     def generate(self):
         levels = [
-            {self.fake.word(): self.fake.word()} for _ in range(3)
+            {
+                self.fake.word(): self.fake.word()
+            } for _ in range(3)
         ]
         meta_data = {
-            self.fake.word(): self.fake.word() for _ in range(self.fake.random_int(min=1, max=5))
+            self.fake.word(): self.fake.word()
+            for _ in range(self.fake.random_int(min=1, max=5))
         }
-        return {
-            "levels": levels,
-            "meta_data": meta_data
-        }
+        return ValidationPointModel(
+            levels=levels,
+            meta_data=meta_data
+        )
 
     def generate_result(self):
         return {
             "name": self.fake.word(),
-            "actual": "please pass",
-            "expected": "please pass",
-            "tolerance": 0
+            "actual": self.fake.word(),
+            "expected": self.fake.word(),
+            "tolerance": self.fake.random_int(min=0, max=100),
         }

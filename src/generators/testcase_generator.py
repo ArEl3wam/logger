@@ -34,12 +34,22 @@ class TestCaseSampleGenerator:
             mac_id = fake.random_int(min=1, max=100)
             macs_configuration[mac_id] = test_case_models.MacsConfiguration(
                 streaming_type_configuration={
-                    "Streaming Type": fake.word(), "Packets Per Burst": fake.random_int(1, 100)},
-                wire_delay_configuration={"Enable": fake.boolean(), "Value": fake.random_int(1, 100)},
-                gptp_configuration={"Enable": fake.boolean()},
-                afdx_configuration={"Packet Identifier": fake.hexify(text="^^^^^^^^^^^"),
-                                    "Error Injection": fake.boolean()},
-                addresses_configuration={"Mode": fake.word()}
+                    "Streaming Type": fake.word(),
+                    "Packets Per Burst": fake.random_int(1, 100)
+                },
+                wire_delay_configuration={
+                    "Enable": fake.boolean(),
+                    "Value": fake.random_int(1, 100)
+                },
+                gptp_configuration={
+                    "Enable": fake.boolean()
+                },
+                afdx_configuration={
+                    "Packet Identifier": fake.hexify(text="^^^^^^^^^^^"),
+                    "Error Injection": fake.boolean()},
+                addresses_configuration={
+                    "Mode": fake.word()
+                }
             )
 
         # Generate fake MpgConfiguration objects
@@ -48,10 +58,15 @@ class TestCaseSampleGenerator:
             mpg_id = fake.random_int(min=1, max=100)
             mpg_configuration[mpg_id] = test_case_models.MpgConfiguration(
                 ports_configuration=[
-                    {"Port Offset": str(fake.random_int(min=1, max=10)), "Port Type": fake.word()}
+                    {
+                        "Port Offset": str(fake.random_int(min=1, max=10)),
+                        "Port Type": fake.word()
+                    }
                     for _ in range(fake.random_int(min=1, max=2))
                 ],
-                fec_configuration={"Enable": fake.boolean()}
+                fec_configuration={
+                    "Enable": fake.boolean()
+                }
             )
 
         # Generate fake TestCaseModel object

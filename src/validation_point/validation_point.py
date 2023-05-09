@@ -2,19 +2,19 @@ from collections import defaultdict
 
 from src.comparator.comparator import Comparator
 from src.dependencies.utils.requests_handler import RequestsHandler
+from src.dependencies.models.validation_point import ValidationPointModel
 
 
 class ValidationPoint:
     def __init__(
             self,
-            levels: list[dict],
-            meta_data: dict,
+            validation_point_model: ValidationPointModel,
             test_suite_ref,
             validation_tag_ref,
             test_case_ref
     ):
-        self.levels = levels
-        self.meta_data = meta_data
+        self.levels = validation_point_model.levels
+        self.meta_data = validation_point_model.meta_data
         self.results: dict[str, dict] = defaultdict(dict)
         self.parent_test_suite = test_suite_ref
         self.parent_test_case = test_case_ref
