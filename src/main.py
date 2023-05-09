@@ -1,9 +1,9 @@
 from src.test_suite.test_suite import TestSuite
 
-from src.test_suite.generator import TestSuiteSampleGenerator
-from src.test_case.generator import TestCaseSampleGenerator
-from src.validation_tag.generator import ValidationTagSampleGenerator
-from src.validation_point.generator import ValidationPointSampleGenerator
+from src.generators.testsuite_generator import TestSuiteSampleGenerator
+from src.generators.testcase_generator import TestCaseSampleGenerator
+from src.generators.validationtag_generator import ValidationTagSampleGenerator
+from src.generators.validationpoint_generator import ValidationPointSampleGenerator
 
 
 test_suite_sample_generator = TestSuiteSampleGenerator()
