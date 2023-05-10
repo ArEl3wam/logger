@@ -13,11 +13,11 @@ class TestSuiteSampleGenerator:
             sa_configuration.append(
                 test_suite_models.StandAloneAttributes(
                     id=i + 1,
-                    mii_enum=fake.random_element(elements=("GMII", "XGMII")),
-                    miiLaneNumber=fake.random_int(min=1, max=4),
-                    miiLaneWidth=fake.random_int(min=32, max=128, step=32),
-                    miiSpeed=fake.random_int(min=1, max=100),
-                    compiledFEC=fake.random_element(elements=("NO_FEC", "RS_FEC")),
+                    mii_enum=fake.random_element(elements=("GMII", "XGMII", "CGMII", "25GMII")),
+                    miiLaneNumber=fake.random_element(elements=(1, 4, 16)),
+                    miiLaneWidth=fake.random_element(elements=(32, 64, 128, 256)),
+                    miiSpeed=fake.random_element(elements=(1, 10, 25, 100)),
+                    compiledFEC=fake.random_element(elements=("NO_FEC", "RS_FEC", "FC_FEC", "RS_FC_FEC")),
                     miiWireDelay=fake.random_int(min=0, max=5000),
                 )
             )
@@ -27,11 +27,11 @@ class TestSuiteSampleGenerator:
             mpg_configuration.append(
                 test_suite_models.MPGAttributes(
                     id=i + 1,
-                    compiledFEC=fake.random_element(elements=("NO_FEC", "RS_FEC")),
-                    mpgPortIdOffset=fake.random_int(min=0, max=4),
-                    mpgPortsNumber=fake.random_int(min=1, max=8),
-                    mpgLanesNumber=fake.random_int(min=1, max=4),
-                    mpgMaxLanesNumberList=fake.random_int(min=1, max=4),
+                    compiledFEC=fake.random_element(elements=("NO_FEC", "RS_FEC", "FC_FEC", "RS_FC_FEC")),
+                    mpgPortIdOffset=fake.random_int(min=0, max=20),
+                    mpgPortsNumber=fake.random_element(elements=(1, 4, 8, 16)),
+                    mpgLanesNumber=fake.random_element(elements=(1, 4, 8, 16)),
+                    mpgMaxLanesNumberList=fake.random_element(elements=(1, 4, 8, 16, 64)),
                     mpgLaneWidth=fake.random_int(min=32, max=128, step=32),
                     mpgMaxLaneWidthList=fake.random_int(min=32, max=128, step=32),
                     mpgOneG_ENABLED=fake.random_int(min=0, max=1),
@@ -40,14 +40,22 @@ class TestSuiteSampleGenerator:
             )
 
         # generate random sa_connectivity_map and mpg_connectivity_map dictionaries
-        sa_connectivity_map = {
-            str(i + 1): str(fake.random_int(min=1, max=2))
-            for i in range(fake.random_int(min=1, max=6))
-        }
-        mpg_connectivity_map = {
-            str(i + 1): str(fake.random_int(min=1, max=2))
-            for i in range(fake.random_int(min=1, max=6))
-        }
+        sa_connectivity_map = {}
+        mpg_connectivity_map = {}
+        idx = 1
+        for i in range(fake.random_int(min=1, max=6)):
+            is_loopback_sa_co_mpg = fake.boolean()
+            if is_loopback_sa_co_mpg:
+                sa_connectivity_map[str(idx)] = str(idx)
+                mpg_connectivity_map[str(idx)] = str(idx + 1)
+                mpg_connectivity_map[str(idx + 1)] = str(idx)
+                idx += 1
+            else:
+                sa_connectivity_map[str(idx)] = str(idx + 1)
+                sa_connectivity_map[str(idx + 1)] = str(idx)
+                mpg_connectivity_map[str(idx)] = str(idx)
+                idx += 1
+            idx += 1
 
         # initialize the DUTInstanceInfo, DUTConnectivityMap, and DesignInfo objects with the generated data
         dut_instance_info = test_suite_models.DUTInstanceInfo(
@@ -65,14 +73,14 @@ class TestSuiteSampleGenerator:
 
         # generate a TestSuite object with the generated data
         return test_suite_models.TestSuiteModel(
-            owner=fake.name(),
-            version=fake.random_int(),
-            machine=fake.word(),
-            running_mode=fake.word(),
-            platform=fake.word(),
-            solution=fake.word(),
-            tool_name=fake.word(),
-            metaData=fake.sentence(),
+            owner=fake.random_element(elements=("Mustafa El-Antrawy", "Ahmed Seif", "Ola Alaa", "Noha Gamal", "Merna Ashraf", "Mahmoud Sabra")),
+            version=f"{fake.random_int(min=11, max=12)}.{fake.random_int(min=1, max=8)}.{fake.random_int(min=1, max=3)}",
+            machine=fake.random_element(elements=("egc-med-einstein", "egc-med-nmahfouz", "egc-med-berners", "egc-med-edison")),
+            running_mode=fake.random_element(elements=("Emulation", "Simulation", "Velclkgen", "Hybrid")),
+            platform=fake.random_element(elements=("Veloce", "VPS")),
+            solution="Ethernet",
+            tool_name=fake.random_element(elements=("EPGM", "Controller")),
+            metaData=fake.random_element(elements=("GPTP Feature Testing", "AFDX Feature Testing", "System Testing", "Official Release")),
             date=str(fake.date_time()),
             design_info=design_info,
         )

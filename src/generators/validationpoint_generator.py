@@ -7,14 +7,11 @@ class ValidationPointSampleGenerator:
         self.fake = Faker()
 
     def generate(self):
-        levels = [
-            {
-                self.fake.word(): self.fake.word()
-            } for _ in range(3)
-        ]
+        levels = [{"mac": self.fake.random_int(min=1, max=64)},
+                  {"direction": self.fake.random_element(elements=("Rx", "Tx"))}]
+
         meta_data = {
-            self.fake.word(): self.fake.word()
-            for _ in range(self.fake.random_int(min=1, max=5))
+            "Additional Info": "No Additional Info supplied"
         }
         return ValidationPointModel(
             levels=levels,
@@ -23,8 +20,8 @@ class ValidationPointSampleGenerator:
 
     def generate_result(self):
         return {
-            "name": self.fake.word(),
-            "actual": self.fake.word(),
-            "expected": self.fake.word(),
-            "tolerance": self.fake.random_int(min=0, max=100),
+            "name": self.fake.random_element(elements=("Packets Parsed", "Total Flows", "Signatured Packets", "Errors Count")),
+            "actual": self.fake.random_element(elements=(100, 105, 110)),
+            "expected": self.fake.random_element(elements=(100, 105, 110)),
+            "tolerance": self.fake.random_int(min=0, max=1),
         }

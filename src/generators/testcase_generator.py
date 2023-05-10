@@ -11,7 +11,7 @@ class TestCaseSampleGenerator:
 
         running_macs_info = [
             test_case_models.RunningMacsInfo(
-                id=fake.random_int(min=1, max=100),
+                id=fake.random_int(min=1, max=64),
                 mii_type=fake.word()
             )
             for _ in range(3)
@@ -19,9 +19,9 @@ class TestCaseSampleGenerator:
 
         dut_master_slave_info = []
         for i in range(3):
-            master_id = fake.random_int(min=1, max=100)
+            master_id = fake.random_int(min=1, max=64)
             slave_ids = [
-                fake.random_int(min=1, max=100)
+                fake.random_int(min=1, max=64)
                 for _ in range(fake.random_int(min=1, max=3))
             ]
             dut_master_slave_info.append(
@@ -31,15 +31,15 @@ class TestCaseSampleGenerator:
         # Generate fake MacsConfiguration objects
         macs_configuration = {}
         for i in range(3):
-            mac_id = fake.random_int(min=1, max=100)
+            mac_id = fake.random_int(min=1, max=64)
             macs_configuration[mac_id] = test_case_models.MacsConfiguration(
                 streaming_type_configuration={
-                    "Streaming Type": fake.word(),
+                    "Streaming Type": fake.random_element(elements=("Packet", "Bundle", "GPTP", "IET")),
                     "Packets Per Burst": fake.random_int(1, 100)
                 },
                 wire_delay_configuration={
                     "Enable": fake.boolean(),
-                    "Value": fake.random_int(1, 100)
+                    "Value": fake.random_int(1, 3000)
                 },
                 gptp_configuration={
                     "Enable": fake.boolean()
@@ -48,7 +48,7 @@ class TestCaseSampleGenerator:
                     "Packet Identifier": fake.hexify(text="^^^^^^^^^^^"),
                     "Error Injection": fake.boolean()},
                 addresses_configuration={
-                    "Mode": fake.word()
+                    "Mode": fake.random_element(elements=("Static", "Sweep", "Random"))
                 }
             )
 

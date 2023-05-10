@@ -7,10 +7,11 @@ class ValidationTagSampleGenerator:
         self.fake = Faker()
 
     def generate(self):
+        validation_tag_name = self.fake.random_element(elements=("Signature", "IFG", "Packet Fields", "GPTP", "IET", "Bundle", "AFDX", "Session APIs")) + ' Validation'
         return validation_tag_models.ValidationTagModel(
-            name=self.fake.name(),
+            name=validation_tag_name,
             metaData={
-                "description": self.fake.text(),
-                "executable_path": self.fake.file_path(),
+                "Description": f"{validation_tag_name} is enabled ",
+                "Executable Path": f"/analyzers/analyzers_exec/ve_{validation_tag_name.replace(' ', '').lower()}.o",
             }
         )
