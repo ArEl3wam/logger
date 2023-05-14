@@ -81,6 +81,5 @@ class TestSuiteSampleGenerator:
             solution="Ethernet",
             tool_name=fake.random_element(elements=("EPGM", "Controller")),
             metaData=fake.random_element(elements=("GPTP Feature Testing", "AFDX Feature Testing", "System Testing", "Official Release")),
-            date=str(fake.date_time()),
             design_info=design_info,
         )

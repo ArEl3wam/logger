@@ -48,5 +48,4 @@ class TestSuiteModel(BaseModel):
     solution: str
     tool_name: str
     metaData: str
-    date: str
     design_info: DesignInfo
