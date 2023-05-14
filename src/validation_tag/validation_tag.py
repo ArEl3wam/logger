@@ -1,17 +1,21 @@
+from datetime import datetime
+
+from src.dependencies.models.validation_tag import ValidationTagModel
 from src.dependencies.models.validation_point import ValidationPointModel
 from src.validation_point.validation_point import ValidationPoint
 from src.dependencies.utils.requests_handler import RequestsHandler
 
 
 class ValidationTag:
-    def __init__(self, validation_tag_model, test_suite_ref, test_case_ref=None):
-        self.meta_data = validation_tag_model
+    def __init__(self, validation_tag_model: ValidationTagModel, test_suite_ref, test_case_ref=None):
+        self.meta_data = validation_tag_model.dict()
         self.parent_test_suite = test_suite_ref
         self.parent_test_case = test_case_ref
         self.validation_points = []
 
         self.db_id = None
         self.is_success = True
+        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         if test_case_ref:
             self.url_postfix = "validationTags/testSuites/{test_suite_id}/testCases/{test_case_id}"
@@ -37,7 +41,7 @@ class ValidationTag:
         self.parent_test_case.update_status(is_success)
 
     def json(self):
-        return {"metaData": self.meta_data.dict(), "isSuccessful": self.is_success}
+        return {"metaData": self.meta_data, "isSuccessful": self.is_success, "creationDate": self.creation_date}
 
     def push(self):
         if not self.db_id:

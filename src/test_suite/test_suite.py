@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.dependencies.models.test_suite import TestSuiteModel
 from src.dependencies.models.test_case import TestCaseModel
 from src.dependencies.models.validation_tag import ValidationTagModel
@@ -9,12 +11,13 @@ from src.validation_tag.validation_tag import ValidationTag
 
 class TestSuite:
     def __init__(self, test_suite_model: TestSuiteModel):
-        self.meta_data = test_suite_model
+        self.meta_data = test_suite_model.dict()
         self.test_cases: list[test_case.TestCase] = []
         self.validation_tags = []
 
         self.db_id = None
         self.is_success = True
+        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self.url_postfix = "TestSuites/"
         self.requests_handler = RequestsHandler.get_instance()
 
@@ -39,7 +42,7 @@ class TestSuite:
         self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
 
     def json(self):
-        return {"metaData": self.meta_data.dict(), "isSuccessful": self.is_success}
+        return {"metaData": self.meta_data, "isSuccessful": self.is_success, "creationDate": self.creation_date}
 
     def push(self):
         if not self.db_id:

@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 
 from src.comparator.comparator import Comparator
 from src.dependencies.utils.requests_handler import RequestsHandler
@@ -22,6 +23,7 @@ class ValidationPoint:
 
         self.db_id = None
         self.is_success = True
+        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self.url_postfix = "TestSuite/{test_suite_id}/TestCase/{test_case_id}/" \
                            "ValidationTag/{validation_tag_id}/ValidationPoint"
 
@@ -61,6 +63,7 @@ class ValidationPoint:
             "metaData": self.meta_data,
             "results": self.results,
             "isSuccessful": self.is_success,
+            "creationDate": self.creation_date,
         }
 
     def push(self):
