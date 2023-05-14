@@ -76,7 +76,7 @@ class TestSuiteSampleGenerator:
             owner=fake.random_element(elements=("Mustafa El-Antrawy", "Ahmed Seif", "Ola Alaa", "Noha Gamal", "Merna Ashraf", "Mahmoud Sabra")),
             version=f"{fake.random_int(min=11, max=12)}.{fake.random_int(min=1, max=8)}.{fake.random_int(min=1, max=3)}",
             machine=fake.random_element(elements=("egc-med-einstein", "egc-med-nmahfouz", "egc-med-berners", "egc-med-edison")),
-            running_mode=fake.random_element(elements=("Emulation", "Simulation", "Velclkgen", "Hybrid")),
+            compilation_mode=fake.random_element(elements=("Emulation", "Simulation", "Velclkgen", "Hybrid")),
             platform=fake.random_element(elements=("Veloce", "VPS")),
             solution="Ethernet",
             tool_name=fake.random_element(elements=("EPGM", "Controller")),

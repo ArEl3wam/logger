@@ -43,7 +43,7 @@ class TestSuiteModel(BaseModel):
     owner: str
     version: str
     machine: str
-    running_mode: str
+    compilation_mode: str
     platform: str
     solution: str
     tool_name: str
