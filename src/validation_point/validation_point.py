@@ -23,7 +23,7 @@ class ValidationPoint:
 
         self.db_id = None
         self.is_success = True
-        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.creation_date = str(datetime.now())
         self.url_postfix = "TestSuite/{test_suite_id}/TestCase/{test_case_id}/" \
                            "ValidationTag/{validation_tag_id}/ValidationPoint"
 
@@ -54,7 +54,7 @@ class ValidationPoint:
         self.is_success = is_success
         self.push()
         url_postfix = "validationPoints/{validation_point_id}".format(validation_point_id=self.db_id)
-        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
+        self.requests_handler.patch(url_postfix, {"status": self.is_success})
         self.parent_validation_tag.update_status(is_success)
 
     def json(self):
@@ -62,8 +62,8 @@ class ValidationPoint:
             "levels": self.levels,
             "metaData": self.meta_data,
             "results": self.results,
-            "isSuccessful": self.is_success,
-            "creationDate": self.creation_date,
+            "status": self.is_success,
+            "creation_date": self.creation_date,
         }
 
     def push(self):

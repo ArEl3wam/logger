@@ -15,7 +15,7 @@ class ValidationTag:
 
         self.db_id = None
         self.is_success = True
-        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.creation_date = str(datetime.now())
 
         if test_case_ref:
             self.url_postfix = "validationTags/testSuites/{test_suite_id}/testCases/{test_case_id}"
@@ -37,11 +37,11 @@ class ValidationTag:
 
         self.is_success = is_success  # if validation tag is successful, and it is failed now, update state
         url_postfix = "validationTags/{validation_tag_id}".format(validation_tag_id=self.db_id)
-        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
+        self.requests_handler.patch(url_postfix, {"status": self.is_success})
         self.parent_test_case.update_status(is_success)
 
     def json(self):
-        return {"metaData": self.meta_data, "isSuccessful": self.is_success, "creationDate": self.creation_date}
+        return {"metaData": self.meta_data, "status": self.is_success, "creation_date": self.creation_date}
 
     def push(self):
         if not self.db_id:

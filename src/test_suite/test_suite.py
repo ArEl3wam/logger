@@ -17,7 +17,7 @@ class TestSuite:
 
         self.db_id = None
         self.is_success = True
-        self.creation_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.creation_date = str(datetime.now())
         self.url_postfix = "TestSuites/"
         self.requests_handler = RequestsHandler.get_instance()
 
@@ -39,10 +39,10 @@ class TestSuite:
 
         self.is_success = is_success
         url_postfix = "TestSuites/{test_suite_id}".format(test_suite_id=self.db_id)
-        self.requests_handler.patch(url_postfix, {"isSuccessful": self.is_success})
+        self.requests_handler.patch(url_postfix, {"status": self.is_success})
 
     def json(self):
-        return {"metaData": self.meta_data, "isSuccessful": self.is_success, "creationDate": self.creation_date}
+        return {"metaData": self.meta_data, "status": self.is_success, "creation_date": self.creation_date}
 
     def push(self):
         if not self.db_id:

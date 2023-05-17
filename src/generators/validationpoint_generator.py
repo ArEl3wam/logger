@@ -18,10 +18,21 @@ class ValidationPointSampleGenerator:
             meta_data=meta_data
         )
 
-    def generate_result(self):
-        return {
-            "name": self.fake.random_element(elements=("Packets Parsed", "Total Flows", "Signatured Packets", "Errors Count")),
-            "actual": self.fake.random_element(elements=(100, 105, 110)),
-            "expected": self.fake.random_element(elements=(100, 105, 110)),
-            "tolerance": self.fake.random_int(min=0, max=1),
-        }
+    def generate_result(self, status: str):
+        name = self.fake.random_element(elements=("Packets Parsed", "Total Flows", "Signatured Packets", "Errors Count"))
+        tolerance = self.fake.random_int(min=0, max=1)
+        if status == "fail":
+            return {
+                "name": name,
+                "actual": self.fake.random_element(elements=(100, 105, 110)),
+                "expected": self.fake.random_element(elements=(101, 106, 1210)),
+                "tolerance": tolerance
+            }
+        else:
+            element = self.fake.random_element(elements=(100, 105, 110))
+            return {
+                "name": name,
+                "actual": element,
+                "expected": element,
+                "tolerance": tolerance
+            }
