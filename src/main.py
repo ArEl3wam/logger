@@ -1,10 +1,9 @@
 from time import time
+from src.generators.fake_data_generator.testsuite_generator import TestSuiteSampleGenerator
+from src.generators.fake_data_generator.validationtag_generator import ValidationTagSampleGenerator
 from src.test_suite.test_suite import TestSuite
-
-from src.generators.testsuite_generator import TestSuiteSampleGenerator
-from src.generators.testcase_generator import TestCaseSampleGenerator
-from src.generators.validationtag_generator import ValidationTagSampleGenerator
-from src.generators.validationpoint_generator import ValidationPointSampleGenerator
+from src.generators.fake_data_generator.testcase_generator import TestCaseSampleGenerator
+from src.generators.fake_data_generator.validationpoint_generator import ValidationPointSampleGenerator
 
 
 test_suite_sample_generator = TestSuiteSampleGenerator()
@@ -13,9 +12,9 @@ validation_tag_sample_generator = ValidationTagSampleGenerator()
 validation_point_sample_generator = ValidationPointSampleGenerator()
 
 NUMBER_OF_TEST_SUITES = 1
-NUMBER_OF_TEST_CASES = 50
-NUMBER_OF_VALIDATION_TAGS = 20
-NUMBER_OF_VALIDATION_POINTS = 2
+NUMBER_OF_TEST_CASES = 1
+NUMBER_OF_VALIDATION_TAGS = 1
+NUMBER_OF_VALIDATION_POINTS = 1
 
 start_time = time()
 

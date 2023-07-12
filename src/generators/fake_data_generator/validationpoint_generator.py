@@ -1,5 +1,7 @@
 from faker import Faker
 from src.dependencies.models.validation_point import ValidationPointModel
+from src.generators.model_generators.validation_point_model_generator.validation_point_types.validation_point_level_three import \
+    ValidationPointLevelThree
 
 
 class ValidationPointSampleGenerator:
@@ -7,16 +9,17 @@ class ValidationPointSampleGenerator:
         self.fake = Faker()
 
     def generate(self):
-        levels = [{"mac": self.fake.random_int(min=1, max=64)},
-                  {"direction": self.fake.random_element(elements=("Rx", "Tx"))}]
-
-        meta_data = {
-            "Additional Info": "No Additional Info supplied"
-        }
-        return ValidationPointModel(
-            levels=levels,
-            meta_data=meta_data
-        )
+        # levels = [{"mac": self.fake.random_int(min=1, max=64)},
+        #           {"direction": self.fake.random_element(elements=("Rx", "Tx"))}]
+        #
+        # meta_data = {
+        #     "Additional Info": "No Additional Info supplied"
+        # }
+        # return ValidationPointModel(
+        #     levels=levels,
+        #     meta_data=meta_data
+        # )
+        return ValidationPointLevelThree(mac=1, direction="rx", packet_id=1).model()
 
     def generate_result(self, status: str):
         name = self.fake.random_element(elements=("Packets Parsed", "Total Flows", "Signatured Packets", "Errors Count"))
