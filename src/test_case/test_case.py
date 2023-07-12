@@ -38,11 +38,13 @@ class TestCase:
         return {"metaData": self.meta_data, "status": self.is_success, "creation_date": self.creation_date}
 
     def push(self):
-        if not self.db_id:
-            self.parent_test_suite.push()
-            self.db_id = self.requests_handler.push(
-                self.url_postfix.format(test_suite_id=self.parent_test_suite.db_id), self.json()
-            )
+        if self.db_id:
+            return
+
+        self.parent_test_suite.push()
+        self.db_id = self.requests_handler.push(
+            self.url_postfix.format(test_suite_id=self.parent_test_suite.db_id), self.json()
+        )
 
     def push_all(self):
         self.push()

@@ -33,9 +33,10 @@ class TestSuite:
 
     def update_status(self, is_success: bool):
         if not self.is_success:
-            return
+            return  # test suite is already failed
+
         if self.is_success and is_success:
-            return
+            return  # test suite current state is success and new state is also success
 
         self.is_success = is_success
         url_postfix = "TestSuites/{test_suite_id}".format(test_suite_id=self.db_id)
@@ -45,8 +46,10 @@ class TestSuite:
         return {"metaData": self.meta_data, "status": self.is_success, "creation_date": self.creation_date}
 
     def push(self):
-        if not self.db_id:
-            self.db_id = self.requests_handler.push(self.url_postfix, self.json())
+        if self.db_id:
+            return
+
+        self.db_id = self.requests_handler.push(self.url_postfix, self.json())
 
     def push_all(self):
         self.push()

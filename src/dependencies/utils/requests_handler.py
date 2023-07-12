@@ -17,7 +17,7 @@ class RequestsHandler:
             raise Exception("This class is a singleton!")
         else:
             RequestsHandler.__instance = self
-            self.url = "http://localhost:3000/"
+            self.url = "http://localhost:8080/"
             self.session = requests.Session()
 
     def push(self, url_postfix: str, data: dict):

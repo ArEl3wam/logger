@@ -67,16 +67,18 @@ class ValidationPoint:
         }
 
     def push(self):
-        if not self.db_id:
-            self.parent_test_suite.push()
-            self.parent_test_case.push()
-            self.parent_validation_tag.push()
-            self.url_postfix = self.url_postfix.format(
-                test_suite_id=self.parent_test_suite.db_id,
-                test_case_id=self.parent_test_case.db_id,
-                validation_tag_id=self.parent_validation_tag.db_id
-            )
-            self.db_id = self.requests_handler.push(self.url_postfix, self.json())
+        if self.db_id:
+            return
+
+        self.parent_test_suite.push()
+        self.parent_test_case.push()
+        self.parent_validation_tag.push()
+        self.url_postfix = self.url_postfix.format(
+            test_suite_id=self.parent_test_suite.db_id,
+            test_case_id=self.parent_test_case.db_id,
+            validation_tag_id=self.parent_validation_tag.db_id
+        )
+        self.db_id = self.requests_handler.push(self.url_postfix, self.json())
 
     def push_all(self):
         self.push()

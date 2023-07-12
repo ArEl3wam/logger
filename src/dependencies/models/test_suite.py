@@ -48,4 +48,4 @@ class TestSuiteModel(BaseModel):
     solution: str
     tool_name: str
     metaData: str
-    design_info: DesignInfo
+    design_info: DesignInfo | dict
